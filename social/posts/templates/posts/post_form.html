@@ -1,0 +1,19 @@
+{% extend 'base.html' %}
+
+
+
+
+{%  block body  %} 
+
+<form method="post" enctype="multipart/form-data">
+{% csrf-token %}
+
+{% bootstrap_form form %}
+<input type='submit' value="post" class='btn btn-primary'>
+<a href="{% url '/' %} " class='btn btn-secondary'></a>  
+</form>
+
+
+
+{% endfor %}
+{% endblock %}

@@ -3,48 +3,36 @@ from django.db import models
 from django.db.models.deletion import CASCADE
 from django.utils import timezone
 from django.conf import settings
-from django.contrib.auth.models import User
-class Account(User):
-    birth=models.DateField(null=True,blank=True)
+from django.contrib.auth import models as m 
+
+
+
+class Account(models.Model):
+    first_Name=models.CharField(max_length=150,blank=True ,null=True)
+    last_Name=models.CharField(max_length=150,blank=True ,null=True)
+    username=models.CharField(max_length=150,blank=True ,null=True)
+    user=models.OneToOneField(m.User,on_delete=models.CASCADE,null=True,related_name='cas')
+    birth=models.DateField(null=True,blank=True,)
+    Email_address=models.EmailField(null=True,blank=True)
     address=models.TextField(null=True,blank=True)
+    groups=models.ManyToManyField('groups.Group',through='groups.Membership',related_name='groups')
+    friend_to=models.ManyToManyField('accounts.Account',blank=True,related_name='friends')
+
+    def save(self,*args,**kwargs):
+        if self.username==None:
+            self.username=self.user.username
+        if self.last_Name==None:
+            self.last_Name=self.user.last_name
+        if self.first_Name==None:
+            self.first_Name=self.user.first_name
+        if self.Email_address==None:
+            self.Email_address= self.user.email
+        return super().save(*args,**kwargs)
+
     class Meta:
         verbose_name='Account'
     def __str__(self):
-        return self.username
-class Post(models.Model):
-    text=models.TextField()
+        return '@{}'.format(self.username)
 
-    created_at=models.DateTimeField(auto_now_add=True)
-    published_at=models.DateTimeField(null=True,blank=True)
-    updated_at=models.DateTimeField(auto_now_add=True)
-    owner=models.ForeignKey(Account,on_delete=models.CASCADE)
-   
-    def publish(self):
-        self.published_at= timezone.now()
-
-    def __str__(self):
-        return self.Text
-    
-
-class Group(models.Model):
-    name=models.CharField(max_length=150)
-    description = models.TextField()
-    created_at=models.DateTimeField(auto_now_add=True)
-    published_at=models.DateTimeField(null=True,blank=True)
-    updated_at=models.DateTimeField(auto_now_add=True)
-    owner=models.ForeignKey(Account,on_delete=models.CASCADE)
-    
-    members=models.ManyToManyField(Account,through='Membership',related_name='Groups')
-    posts=models.ForeignKey(Post,null=True,on_delete=models.SET_NULL)
-
-    def __str__(self):
-        return self.name
-class Membership(models.Model):
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
-    date_joined = models.DateTimeField()
-
-    def accept(self):
-        self.date_joined=timezone.now()
 
 
