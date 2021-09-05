@@ -1,15 +1,14 @@
-from django.bd import models
-from django.utils.text import slugify
+{% extends 'base.html' %}
+{% load bootstrap3 %}
 
 
 
+{% block body %}  
+<form action="" method='post'>
+{% csrf_token %}
+{% bootstrap_form form %}
 
-import misaka
-from django.contrib.auth import get_user_model
-
-User=get_user_model()
-
-
-from django import template
-
-
+<input type="submit" value='create' class='btn btn-primary' style='margin-left: 20px;'>
+<a href="{% url 'groups:ListGroup' user.username %}" class='btn btn-secondary'>cancel</a>
+</form>
+{% endblock %}

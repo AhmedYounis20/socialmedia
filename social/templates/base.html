@@ -18,8 +18,8 @@
 {% if user.is_authenticated %}
 {% if user.is_superuser %}<li><a href='/admin'  class='nav-item nav-link px-3'> admin board</a></li> {% endif %}
 <li class='nav-item '><a href="{% url 'posts:FriendsPost' %}" class=" nav-link px-3">Posts </a> </li>
-<li><a href="#" class="nav-item nav-link px-3">Groups </a> </li>
-<li  ><a href='#' class="nav-item nav-link px-3">Create Group </a> </li>
+<li><a href="{% url 'groups:ListGroup' user.username %}" class="nav-item nav-link px-3">Groups </a> </li>
+<li  ><a href="{% url 'groups:createGroup' %}" class="nav-item nav-link px-3">Create Group </a> </li>
 <li ><a href="{% url 'accounts:logout' %}" class="nav-item nav-link px-3">logout</a> </li>
 {% else %}
 <li ><a href='#' class="nav-item nav-link px-3">Groups</a> </li>

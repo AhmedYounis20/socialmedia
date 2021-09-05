@@ -15,11 +15,8 @@ class FriendsPostsListView(ListView,LoginRequiredMixin):
         ctx=super().get_context_data(**kwargs)
         all_posts=ctx['post_list']
         friends_post_list=[]
-        print(self.request.user)
-
         user_account=Account.objects.get(username=self.request.user)
         for post in all_posts:
-            print(post.owner.username)
             if user_account.friends.values().filter(username=post.owner.username).exists():
                 friends_post_list.append(post)
 

@@ -9,7 +9,7 @@ class Post(models.Model):
     published_at=models.DateTimeField(null=True,blank=True)
     updated_at=models.DateTimeField(auto_now_add=True)
     owner=models.ForeignKey('accounts.Account',on_delete=models.CASCADE)
-   
+    group=models.ForeignKey('groups.Group',related_name='posts',null=True,blank=True,on_delete=models.CASCADE)
     def publish(self):
         self.published_at= timezone.now()
 

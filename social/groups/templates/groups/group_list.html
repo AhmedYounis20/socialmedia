@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+
+
+
+{% block body %}  
+{% if user.username == username %}
+
+{% for group in userGroups %} 
+
+{{group}}
+
+{% endfor %}
+{% else %} 
+
+<h1 style="margin-top: 20px; text-align:center ;">go fuck yourself man you're trying to access someone else data </h1>
+{% endif %}
+{% endblock %}
