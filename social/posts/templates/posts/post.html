@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+{% load my_tags %}
 
 
 
@@ -7,8 +8,69 @@
 
 
 
-{{post}}
+<article class="post vt-post" style="max-width: 99%;">
+    <div class="row">
+        <div class="col-xs-6 col-sm-5 col-sm-5 col-lg-4">
+            <div class="post-type post-img">
+                <a href="#"><img src="https://bootdey.com/img/Content/avatar/avatar{{ post.owner.id|mod:6|add:2  }}.png" class="img-thumbnail rounded img" alt="image post"></a>
+            </div>
+            <div class="author-info author-info-2  col-lg-8">
+                <ul class="list-inline">
+                    <li >
+                        <div class="info" style='margin-right: 20px;'>
+                            <span>Posted on:</span>
+                            <strong>{{post.published_at|timesince}}</strong></div>
+                    </li>
+                    <li>
+                        <div class="info">
+                            <span>Comments:</span>
+                            <strong>0</strong></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-xs-5 col-sm-5 col-md-5 col-sm-4">
+            <div class="caption">
+                <h2>{{post.owner.username}}</h2>
+                <p> {{post.text}}</p>
+            <div class="caption">
+                {% if user.username == post.owner.username %}
+                <a class="btn btn-info btn-circle text-uppercase" href="{% url 'posts:PostUpdate' user.username post.id  %} ">edit</a>
+                <a class="btn btn-warning btn-circle text-uppercase"  href="{% url 'posts:PostDelete' user.username post.id %}  "> delete</a>
+                {% endif %}
+        </div>
+    </div>
+</article>
+<form  action="{% url 'posts:addComment' post.owner.username post.id %}" method='post' style="margin-bottom: 40px;">
+{% csrf_token %}
+<input type="number" id="inlineFormInputName2" hidden name='post_id' value={{post.id}} />
+<div class="input-group" style="max-width: 95%;" >
+<input type="text"  class='form-control ' id="inlineFormInputName2" name='text' style='margin-left:1%;' placeholder="Add Comment"/>
+<div class="input-group-append">
+
+<input type="submit"class="btn btn-lg btn-primary" id="inlineFormInputName2"  value='comment' >
+
+</div>
+</div>
+</form>
+<div style='margin-left:1%;'>
+{% for comment in post.comments.all %}
+<div class="well well-lg">
+    <h4 class="media-heading text-uppercase reviews">{{comment.owner.username}}
+    </h4>
+    <ul class="media-date text-uppercase reviews list-inline">
+        {{comment.published_at}}
+    </ul>
+    <p class="media-comment">
+        {{comment.text}}
+    </p>
+    {% if user.username == comment.owner.username %}
+    <a class="btn btn-info btn-circle text-uppercase" href="{% url 'posts:UpdateComment' post.id comment.id %} ">edit</a>
+    <a class="btn btn-warning btn-circle text-uppercase"  href="{% url 'posts:deleteComment' post.id comment.id %}  "> delete</a>
+    {% endif %}
+</div>   
 
 
-
+{%  endfor %}
+</div>
 {% endblock %}

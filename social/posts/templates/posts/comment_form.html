@@ -1,0 +1,15 @@
+
+{% extends 'base.html' %}
+
+{% block body %}
+{% load bootstrap3 %}
+<form method='post'>
+    {% csrf_token %}
+    {% bootstrap_form form%}
+
+    <input type="submit" class="btn  btn-primary" value='edit ' style='margin-left: 1%; width:80px'>
+    <a href="{% url 'posts:PostDetail' post.owner.username post.id %}" class='btn btn-secondary'>cancel</a>
+
+</form>
+
+{% endblock %}
