@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.views.generic import DetailView,ListView,DeleteView,CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import TemplateView
+from django.views.generic.edit import UpdateView
 from accounts.models import Account
 from .models import *
 from posts.models import Post
@@ -29,8 +30,9 @@ class CreateGroupView(CreateView,LoginRequiredMixin):
         return super().form_valid(form)
 
 
-class ListGroupView(ListView,LoginRequiredMixin):
+class UserListGroupView(ListView,LoginRequiredMixin):
     model=Group
+    template_name='groups/user_group_list.html'
     def get_queryset(self) :
         username=self.request.user
         userAccount=Account.objects.get(username=username)
@@ -42,11 +44,16 @@ class ListGroupView(ListView,LoginRequiredMixin):
         data['username']=self.kwargs['username']
         return data
     context_object_name='userGroups'
-        
+class ListGroupView(ListView,LoginRequiredMixin):
+    model=Group
+    template_name='groups/group_list.html'      
 class groupDetailView(DetailView,LoginRequiredMixin):
     model=Group
 
-
+class UpdateGroupView(UpdateView,LoginRequiredMixin):
+    model=Group
+    fields=['name','description','slug']
+    
 class DeleteGroupView(DeleteView,LoginRequiredMixin):
     model=Group
     def get_success_url(self) -> str:

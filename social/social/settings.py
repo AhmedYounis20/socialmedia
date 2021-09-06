@@ -68,6 +68,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries':{'my_tag':'posts.templatetags.my_tags'}
         },
     },
 ]
@@ -120,7 +121,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-STATICDIRS_FILES=[os.path.join(BASE_DIR,'static')]
+STATICFILES_DIRS=['static']
 
 STATIC_URL = '/static/'
 STATIC_ROOT='/static/'
@@ -128,7 +129,7 @@ STATIC_ROOT='/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-LOGIN_REDIRECT_URL='/test'
+LOGIN_REDIRECT_URL='/accounts/test'
 LOGOUT_REDIRECT_URL='/thanks'
 
 

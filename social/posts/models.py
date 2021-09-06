@@ -16,4 +16,4 @@ class Post(models.Model):
     def __str__(self):
         return self.text
     def get_absolute_url(self):
-        return reverse('posts:single',kwargs={'username':self.owner.username,'pk':self.pk})
+        return reverse('posts:PostDetail',kwargs={'username':self.owner.username,'pk':self.pk})
