@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models.deletion import CASCADE
 from django.utils import timezone
 from django.conf import settings
+from django.urls import reverse
 from django.contrib.auth import models as m 
 
 
@@ -17,7 +18,7 @@ class Account(models.Model):
     address=models.TextField(null=True,blank=True)
     groups=models.ManyToManyField('groups.Group',through='groups.Membership',related_name='groups')
     friend_to=models.ManyToManyField('accounts.Account',blank=True,related_name='friends')
-
+    about=models.TextField(null=True , blank=True)
     def save(self,*args,**kwargs):
         if self.username==None:
             self.username=self.user.username
@@ -33,6 +34,8 @@ class Account(models.Model):
         verbose_name='Account'
     def __str__(self):
         return '@{}'.format(self.username)
+    def get_absolute_url(self):
+        return reverse('accounts:profile',kwargs={'username':self.username})
 
 
 

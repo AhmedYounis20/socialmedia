@@ -9,6 +9,7 @@ from django.views.generic.edit import UpdateView
 from accounts.models import Account
 from .models import *
 from posts.models import Post
+from groups.models import Group
 from django.urls import reverse_lazy
 
 class CreateGroupView(CreateView,LoginRequiredMixin):
@@ -49,6 +50,7 @@ class ListGroupView(ListView,LoginRequiredMixin):
     template_name='groups/group_list.html'      
 class groupDetailView(DetailView,LoginRequiredMixin):
     model=Group
+    template_name='groups/group_detail.html'
 
 class UpdateGroupView(UpdateView,LoginRequiredMixin):
     model=Group
@@ -65,3 +67,16 @@ class DeleteGroupView(DeleteView,LoginRequiredMixin):
         print(self.success_url)
         return super().get_context_data(**kwarg)
     
+class addPostView(CreateView,LoginRequiredMixin):
+    model=Post
+    fields=['text']
+    template_name='posts/post_form.html'
+    def form_valid(self,form):
+        object=form.save(commit=False)
+        object.owner=Account.objects.get(user=self.request.user)
+        object.group=Group.objects.get(slug=self.kwargs['groupslug'])
+        object.publish()
+        object.save()
+        return super().form_valid(form)
+    def get_success_url(self):
+        return reverse('groups:GroupDetail', Group.objects.get(slug=self.kwargs['groupslug']).pk)

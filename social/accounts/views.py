@@ -1,11 +1,15 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from .forms import CreateAccountForm
+from django.views.generic.edit import UpdateView
+from .forms import CreateAccountForm,UpdateProfile
 # Create your views here.
 from django.http import HttpResponse
-from django.views.generic import CreateView,TemplateView
+from django.views.generic import CreateView,TemplateView,RedirectView
 from .models import Account
 from django.contrib.auth.models import User
+from groups.models import Group
+from posts.models import Post
 from django.urls import reverse
 
 class signupView(CreateView):
@@ -28,3 +32,23 @@ def CreateAccount(request):
     newAccount.save()
 
     return redirect(reverse('accounts:test'))
+class EditAccountView(UpdateView,LoginRequiredMixin):
+    model=Account
+    form_class=UpdateProfile
+    def get_context_data(self, **kwargs):
+        data=super().get_context_data(**kwargs)
+        data['Account']=Account.objects.get(user=self.request.user)
+        return data
+    template_name='signup.html'
+class Profile(TemplateView,LoginRequiredMixin):
+    template_name='profile.html'
+    def get_context_data(self, **kwargs):
+        data=super().get_context_data(**kwargs)
+        data["Account"]=Account.objects.get(user=self.request.user)
+        data['Posts']=Post.objects.filter(owner=data['Account']).order_by('-published_at')
+        data['Groups']=Group.objects.filter(members__in=[data['Account']])
+        return data
+
+class ProfileRedirect(RedirectView,LoginRequiredMixin):
+    def get_redirect_url(self):
+        return reverse('accounts:profile',kwargs={'username':self.request.user.username})

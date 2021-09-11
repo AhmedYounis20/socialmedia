@@ -8,5 +8,6 @@ path('',views.ListGroupView.as_view(),name='ListGroup'),
 path('<int:pk>/',views.groupDetailView.as_view(),name='GroupDetail'),
 path('<int:pk>/update/',views.UpdateGroupView.as_view(),name='UpdateGroup'),
 path('<int:pk>/delete/',views.DeleteGroupView.as_view(),name='DeleteGroup'),
+path('<slug:groupslug>/addpost/',views.addPostView.as_view(),name='addPost')
 
 ]

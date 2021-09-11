@@ -6,6 +6,7 @@
 {% block body %}  
 {% if group %} 
 {% if group.owner.username == user.username %} 
+<div  class='container'>
 <form action="" method='post'>
 {% csrf_token %}
 {% bootstrap_form form %}
@@ -29,4 +30,5 @@
 {% endif %}
 
 </form>
+</div>
 {% endblock %}

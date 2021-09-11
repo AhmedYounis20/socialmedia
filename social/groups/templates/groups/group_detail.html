@@ -1,14 +1,83 @@
 {% extends 'base.html' %}
 
-
+{% load my_tags %}
 
 
 {% block body %}  
-{{group.name}}
+
+<table class='container' style='margin-bottom: 30px;'>
+    <thead>
+        <col style='width:80%'>
+
+    </thead>
+    <tbody>
+
+        <tr>
+            <th>
+            <p>{{group.name}}</p>
+            <span class="text-muted"> {{group.description}}</span>    
+            
+        </th>
+
+
+        </tr>
+    </tbody>
+</table>
+<div class='container card card-body' style='margin-bottom: 30px;'>
+    <table class='container'>
+        <thead>
+            <col style='width:80%'>
+    
+        </thead>
+        <tbody>
+    
+            <tr>
+                <th>
+                <span>add post</span>
+                
+            </th>
+<th>
+    <a href="{% url 'groups:addPost' group.slug %}"> <i class='fas fa-plus'></i></a>
+</th>    
+    
+            </tr>
+        </tbody>
+    </table>
+</div>
+<form action="">
+
+    {{form}}
+</form>
 {% for post in group.posts.all %} 
-
-
-
+<div class=' container  card card-body'>
+    <div class="row">
+        <div class="col-xs-12 col-sm-5 col-sm-5 col-lg-4">
+            <div class="post-type post-img" style="height: 100px; width: 100px;">
+                <a href="{% url 'posts:PostDetail' post.owner.username post.pk %}"><img src="https://bootdey.com/img/Content/avatar/avatar{{ post.owner.id|mod:6|add:2  }}.png" class="img-thumbnail rounded " alt="image post"></a>
+            </div>
+            <div class="author-info author-info-2  col-lg-8">
+                <ul class="list-inline">
+                    <li >
+                        <div class="info" style='margin-right: 20px;'>
+                           <br/>
+                            <span>Posted on:</span>
+                            <strong>{{post.published_at|timesince}}</strong></div>
+                    </li>
+                    <li>
+                        <div class="info">
+                            <span>Comments:</span>
+                            <strong>{{post.comments.count}}</strong></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-8">
+            <div class="caption">
+                <h2>{{post.owner.username}}</h2>
+                <p> {{post.text}}</p>
+        </div>
+    </div>
+</div>
 
 {% endfor %}
 {% endblock %}

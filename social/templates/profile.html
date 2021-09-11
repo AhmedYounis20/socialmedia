@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% load my_tags %}
+
+
+
+{%  block body  %} 
+
+<div class="row py-5 px-4">
+    <div class="col mx-auto">
+        <!-- Profile widget -->
+        <div class="bg-white shadow rounded overflow-hidden">
+            <div class="px-4 pt-0 pb-4 cover">
+                <div class="media align-items-end profile-head">
+                    <div class="profile mr-3"><img src="https://bootdey.com/img/Content/avatar/avatar{{ user.id|mod:6|add:3  }}.png" alt="..." width="130" class="rounded mb-2 img-thumbnail"><a href="{% url 'accounts:editProfile' user.username Account.id %}" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a></div>
+                    <div class="media-body mb-5 text-black">
+                        <h4 class="mt-0 mb-0">{{Account.first_Name}} {{Account.last_Name}} </h4>
+                        {{Account}}
+                        <p class="small mb-4"> <i class="fas fa-map-marker-alt mr-2"></i>{{Account.address}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-light p-4 d-flex justify-content-end text-center">
+                <ul class="list-inline mb-0">
+                    <li class="list-inline-item">
+                        <h5 class="font-weight-bold mb-0 d-block">{{Posts.all.count}}</h5><small class="text-muted"> <i class="fas fa-image mr-1"></i><a href="{% url 'groups:UserListGroup' user.username  %}">Posts</a></small>
+                    </li>
+                    <li class="list-inline-item">
+                        <h5 class="font-weight-bold mb-0 d-block">{{Groups.all.count}}</h5><small class="text-muted"> <i class="fas fa-users mr-1"></i><a href="{% url 'groups:ListGroup' %}"                    >Groups</a></small>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="px-4 py-3">
+                <h5 class="mb-0">About</h5>
+                <div class="p-4 rounded shadow-sm bg-light">
+           {{Account.about}}
+                </div>
+            </div>
+            <div class="py-4 px-4">
+                    <h5 class="mb-0">Recent Posts</h5>
+                    <br>
+                             
+{% for post in Posts %} 
+
+<article class="post vt-post">
+    <div class="row">
+        <div class="col-xs-12 col-sm-5 col-sm-5 col-lg-4">
+            <div class="post-type post-img">
+                <a href="{% url 'posts:PostDetail' post.owner.username post.pk %}"><img src="https://bootdey.com/img/Content/avatar/avatar{{ post.owner.id|mod:6|add:2  }}.png" class="img-thumbnail rounded img" alt="image post"></a>
+            </div>
+            <div class="author-info author-info-2  col-lg-8">
+                <ul class="list-inline">
+                    <li >
+                        <div class="info" style='margin-right: 20px;'>
+                            <span>Posted on:</span>
+                            <strong>{{post.published_at|timesince}}</strong></div>
+                    </li>
+                    <li>
+                        <div class="info">
+                            <span>Comments:</span>
+                            <strong>{{post.comments.count}}</strong></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-8">
+            <div class="caption">
+                <h2>{{post.owner.username}}</h2>
+                <p> {{post.text}}</p>
+        </div>
+    </div>
+</article>
+
+
+{% endfor %}
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

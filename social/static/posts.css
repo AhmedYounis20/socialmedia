@@ -12,8 +12,6 @@
 }
 
 .post {
-    width: 100%;
-    float: left;
     -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.4);
     -moz-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.4);
     box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.4);
@@ -642,8 +640,11 @@ blockquote {
 .pagination {
     margin: 0px;
 }
-.img{
-    width: 20px;
-    max-width: 200px;
-    height:20px;
+
+.group-post-img{
+
+    width:20px;
+    max-width: 50px;
+    height: 20px;
+
 }
