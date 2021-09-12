@@ -68,7 +68,25 @@
                 <th>
                     <div class="col-xs-12 col-sm-7 col-md-7 col-lg-8">
                         <div class="caption">
-                            <a href="" class='btn btn-danger '> leave</a>
+                            {% if Account in group.members.all %}
+                            <form action="{% url 'groups:leavegroup' %}" method='post'>
+                                {% csrf_token %}
+
+                            <input type="number" hidden name="account_id" value={{Account.id}}>
+                            <input type="number" hidden name="pk" value={{group.id}} >
+
+                            <input type='submit' class='btn btn-danger '  value='leave'/>
+                        </form>
+                                                    {% else %}
+                            <form action="{% url 'groups:joingroup' %}" method='post'>
+                                {% csrf_token %}
+
+                            <input type="number" hidden name="account_id" value={{Account.id}}>
+                            <input type="number" hidden name="pk" value={{group.id}} >
+
+                            <input type='submit' class='btn btn-danger '  value='join'/>
+                        </form>
+                            {% endif %}
                         </div>
                     </div>
 

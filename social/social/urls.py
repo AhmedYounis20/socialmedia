@@ -15,12 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView,RedirectView
 from accounts import views
-
+from django.urls import reverse
 urlpatterns = [
     path('admin/', admin.site.urls,),
-    path('',TemplateView.as_view(template_name='index.html'),name='home'),
+    path('',RedirectView.as_view(url='/accounts/done'),name='home'),
     path('accounts/',include('accounts.urls'),name='accounts'),
     path('thanks/',TemplateView.as_view(template_name='thanks.html')),
     path('accounts/',include('django.contrib.auth.urls'),),

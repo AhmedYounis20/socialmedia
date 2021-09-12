@@ -1,3 +1,4 @@
+from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
@@ -11,7 +12,7 @@ from django.contrib.auth.models import User
 from groups.models import Group
 from posts.models import Post
 from django.urls import reverse
-
+from django.contrib.auth.decorators import login_required
 class signupView(CreateView):
     form_class = CreateAccountForm
     success_url= reverse_lazy('login')
@@ -20,7 +21,7 @@ class signupView(CreateView):
 class signinView(TemplateView):
     
     template_name='login.html'
-
+@login_required
 def test(request):
     if Account.objects.filter(username=request.user).exists():
         return render(request,'test.html')
@@ -48,7 +49,7 @@ class Profile(TemplateView,LoginRequiredMixin):
         data['Posts']=Post.objects.filter(owner=data['Account']).order_by('-published_at')
         data['Groups']=Group.objects.filter(members__in=[data['Account']])
         return data
-
-class ProfileRedirect(RedirectView,LoginRequiredMixin):
-    def get_redirect_url(self):
-        return reverse('accounts:profile',kwargs={'username':self.request.user.username})
+@login_required
+def ProfileRedirect(request):
+    
+    return redirect(reverse('accounts:profile',kwargs={'username':request.user.username}))

@@ -12,7 +12,8 @@
         <div class="bg-white shadow rounded overflow-hidden">
             <div class="px-4 pt-0 pb-4 cover">
                 <div class="media align-items-end profile-head">
-                    <div class="profile mr-3"><img src="https://bootdey.com/img/Content/avatar/avatar{{ user.id|mod:6|add:3  }}.png" alt="..." width="130" class="rounded mb-2 img-thumbnail"><a href="{% url 'accounts:editProfile' user.username Account.id %}" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a></div>
+                    <div class="profile mr-3"><img src="https://bootdey.com/img/Content/avatar/avatar{{ user.id|mod:6|add:3  }}.png" alt="..." width="130" class="rounded mb-2 img-thumbnail">
+                        <a href="{% url 'accounts:editProfile' user.username Account.id %}" class="btn btn-outline-dark btn-sm btn-block">Edit profile</a></div>
                     <div class="media-body mb-5 text-black">
                         <h4 class="mt-0 mb-0">{{Account.first_Name}} {{Account.last_Name}} </h4>
                         {{Account}}
@@ -20,17 +21,23 @@
                     </div>
                 </div>
             </div>
-            <div class="bg-light p-4 d-flex justify-content-end text-center">
-                <ul class="list-inline mb-0">
-                    <li class="list-inline-item">
-                        <h5 class="font-weight-bold mb-0 d-block">{{Posts.all.count}}</h5><small class="text-muted"> <i class="fas fa-image mr-1"></i><a href="{% url 'groups:UserListGroup' user.username  %}">Posts</a></small>
+            <div class="bg-light p-4 d-flex  text-center">
+                
+                <ul class="list-inline mb-0 ">
+                    <li class="list-inline-item" >
+                        <h5 class="font-weight-bold mb-0 d-block">{{Posts.all.count}}</h5><small class="text-muted"> <i class="fas fa-image mr-1"></i>Posts</small>
                     </li>
-                    <li class="list-inline-item">
-                        <h5 class="font-weight-bold mb-0 d-block">{{Groups.all.count}}</h5><small class="text-muted"> <i class="fas fa-users mr-1"></i><a href="{% url 'groups:ListGroup' %}"                    >Groups</a></small>
+                    <li class="list-inline-item" >
+                        <h5 class="font-weight-bold mb-0 d-block">{{Account.friend_to.all.count}}</h5><small class="text-muted"> <i class="fas fa-user-friends"></i>Friends</small>
+                    </li>
+                    
+                    <li class="list-inline-item ">
+                        <h5 class="font-weight-bold mb-0 d-block">{{Groups.all.count}}</h5><small class="text-muted"> <i class="fas fa-users mr-1"></i><a href="{% url 'groups:UserListGroup' user.username %}"                    >Groups</a></small>
                     </li>
 
                 </ul>
             </div>
+            
             <div class="px-4 py-3">
                 <h5 class="mb-0">About</h5>
                 <div class="p-4 rounded shadow-sm bg-light">

@@ -1,5 +1,6 @@
 from django.urls import path
 from django.urls.resolvers import URLPattern 
+from django.views.generic.base import RedirectView 
 from . import views 
 app_name='posts'
 urlpatterns=[

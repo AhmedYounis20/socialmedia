@@ -9,6 +9,7 @@ class CreatePostView(CreateView,LoginRequiredMixin):
     model=Post
     fields=['text']
     template_name='posts/post_form.html'
+    
     def form_valid(self,form):
         object=form.save(commit=False)
         object.owner=Account.objects.get(user=self.request.user)
@@ -29,7 +30,7 @@ class FriendsPostsListView(ListView,LoginRequiredMixin):
         user_account=Account.objects.get(username=self.request.user)
         for post in all_posts:
             if user_account.friends.values().filter(username=post.owner.username).exists():
-                if post.group ==None or user_account.objects.filter(group__in=[post.group]) :
+                if post.group ==None or user_account in post.group.members.all() :
                     if post not in friends_post_list:
                         friends_post_list.append(post) 
             elif post.owner.username==user_account.username:
@@ -53,6 +54,8 @@ class DeletePostView(DeleteView,LoginRequiredMixin):
     def get_queryset(self):
         return super().get_queryset().filter(owner=Account.objects.get(user=self.request.user))
     template_name='posts/post_confirm_delete.html'
+    def get_success_url(self):
+        return reverse('accounts:profile',kwargs={'username':self.request.user.username})
 
     
 

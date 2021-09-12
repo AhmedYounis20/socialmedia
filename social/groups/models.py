@@ -32,7 +32,7 @@ class Group(models.Model):
 class Membership(models.Model):
     account = models.ForeignKey('accounts.Account', on_delete=models.CASCADE)
     group = models.ForeignKey('groups.Group', on_delete=models.CASCADE)
-    date_joined = models.DateTimeField()
+    date_joined = models.DateTimeField(auto_now_add=True)
 
     def accept(self):
         self.date_joined=timezone.now()

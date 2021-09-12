@@ -16,6 +16,6 @@ urlpatterns=[
     path('logout/',LogoutView.as_view(),name='logout'),
     path('createAccount/',views.CreateAccount,name='CreateAccount'),
     path('<slug:username>/profile/edit/<int:pk>',views.EditAccountView.as_view(),name='editProfile'),
-    path('done/',views.ProfileRedirect.as_view(),name='test'),
+    path('done/',views.ProfileRedirect,name='test'),
 
 ]
